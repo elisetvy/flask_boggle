@@ -30,7 +30,6 @@ class BoggleAppTestCase(TestCase):
             self.assertIn('<table class="board"', html)
             self.assertIn(
                 'Test to determine if the board is loaded properly upon game start.', html)
-            # Test for a specific comment that we add to HTML.
 
     def test_api_new_game(self):
         """Test starting a new game."""
