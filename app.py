@@ -5,7 +5,7 @@ from boggle import BoggleGame
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "this-is-secret"
-app.config['DEBUG_TB_HOSTS'] = ["dont-show-debug-toolbar"]
+
 
 # The boggle games created, keyed by game id
 games = {}
@@ -38,6 +38,9 @@ def score_word():
 
     game_id = request.json["gameId"]
     new_word = request.json["word"]
+
+    print(game_id, new_word)
+
     game = games[game_id]
 
     if game.is_word_in_word_list(new_word):
