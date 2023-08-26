@@ -65,3 +65,61 @@ class BoggleAppTestCase(TestCase):
             # test to see that a valid word on the altered board returns {'result': 'ok'}
             # test to see that a valid word not on the altered board returns {'result': 'not-on-board'}
             # test to see that an invalid word returns {'result': 'not-word'}
+
+    def test_new_game_integration(self):
+        """Test """
+        with self.client as client:
+
+            response = client.post('/api/new-game')
+            json = response.get_json()
+            gameId = json.get('gameId')  # should be string
+            game = games[gameId]
+            games[gameId].board = [
+                [
+                    "L",
+                    "E",
+                    "S",
+                    "G",
+                    "M"
+                ],
+                [
+                    "R",
+                    "A",
+                    "T",
+                    "U",
+                    "P"
+                ],
+                [
+                    "W",
+                    "G",
+                    "L",
+                    "K",
+                    "I"
+                ],
+                [
+                    "E",
+                    "K",
+                    "A",
+                    "U",
+                    "O"
+                ],
+                [
+                    "S",
+                    "T",
+                    "E",
+                    "F",
+                    "R"
+                ]
+            ]
+
+            resp = client.post('/api/score-word',
+                        json={'gameId': gameId, 'word': 'RAT'})
+            data = resp.get_json()
+
+            self.assertEqual({"result": "ok"}, data)
+
+            resp = client.post('/api/score-word',
+            json={'gameId': gameId, 'word': 'sdufshdfjhsd'})
+            data = resp.get_json()
+
+            self.assertEqual({"result": "not-word"}, data)
